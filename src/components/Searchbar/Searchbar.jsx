@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import loupe from '../../utils/loupe.svg';
@@ -10,50 +10,46 @@ import {
   SearchFormInput,
 } from './Searchbar.styled';
 
-export class Searchbar extends Component {
-  state = { imageName: '' };
+export function Searchbar({ onSubmit }) {
+  const [imageName, setImageName] = useState('');
 
-  handleChangeInput = evt => {
-    this.setState({ imageName: evt.currentTarget.value.toLowerCase() });
+  const handleChangeInput = evt => {
+    setImageName(evt.currentTarget.value.toLowerCase());
   };
 
-  handleSubmitForm = evt => {
-    const { imageName } = this.state;
-
+  const handleSubmitForm = evt => {
     evt.preventDefault();
     if (imageName.trim() === '' || imageName.length < 3) {
       toast.warn('Searching must be no empty and more than 2 letters');
-      this.resetForm();
+      resetForm();
       return;
     }
-    this.props.onSubmit(imageName);
-    this.resetForm();
+    onSubmit(imageName);
+    resetForm();
   };
 
-  resetForm = () => this.setState({ imageName: '' });
+  const resetForm = () => setImageName('');
 
-  render() {
-    return (
-      <SearchbarWrapper>
-        <SearchForm onSubmit={this.handleSubmitForm}>
-          <SearchButton
-            type="submit"
-            style={{ backgroundImage: `url(${loupe})` }}
-          >
-            <LabelButton>Search</LabelButton>
-          </SearchButton>
-          <SearchFormInput
-            type="text"
-            autocomplete="off"
-            autoFocus
-            placeholder="Search images and photos..."
-            value={this.state.imageName}
-            onChange={this.handleChangeInput}
-          />
-        </SearchForm>
-      </SearchbarWrapper>
-    );
-  }
+  return (
+    <SearchbarWrapper>
+      <SearchForm onSubmit={handleSubmitForm}>
+        <SearchButton
+          type="submit"
+          style={{ backgroundImage: `url(${loupe})` }}
+        >
+          <LabelButton>Search</LabelButton>
+        </SearchButton>
+        <SearchFormInput
+          type="text"
+          autocomplete="off"
+          autoFocus
+          placeholder="Search images and photos..."
+          value={imageName}
+          onChange={handleChangeInput}
+        />
+      </SearchForm>
+    </SearchbarWrapper>
+  );
 }
 
 Searchbar.propTypes = {
