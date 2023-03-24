@@ -29,7 +29,7 @@ export function App() {
         const data = await API.getImages(imageName, page);
         const { hits, totalHits } = data;
         setImages(images => [...images, ...hits]);
-        // setVisibleBtn(true);
+        setVisibleBtn(true);
         setVisibleBtn(page < Math.ceil(totalHits / 12));
         if (page === 1) {
           toast.success(`Hooray! We found ${totalHits} images`);
