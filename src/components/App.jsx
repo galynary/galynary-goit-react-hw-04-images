@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppWrapper } from './App.slyled';
@@ -10,8 +10,6 @@ import { ButtonLoadMore } from './ButtonLoadMore/ButtonLoadMore';
 import { Modal } from './Modal/Modal';
 
 export function App() {
-  const PER_PAGE = useRef(12);
-
   const [imageName, setImageName] = useState('');
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
@@ -28,10 +26,11 @@ export function App() {
     setLoading(true);
     const fetchData = async () => {
       try {
-        const data = await API.getImages(imageName, page, PER_PAGE);
+        const data = await API.getImages(imageName, page);
         const { hits, totalHits } = data;
         setImages(images => [...images, ...hits]);
-        setVisibleBtn(page < Math.ceil(totalHits / PER_PAGE));
+        // setVisibleBtn(true);
+        setVisibleBtn(page < Math.ceil(totalHits / 12));
         if (page === 1) {
           toast.success(`Hooray! We found ${totalHits} images`);
           window.scroll(0, 0);

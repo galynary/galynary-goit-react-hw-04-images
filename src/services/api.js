@@ -4,12 +4,12 @@ import { toast } from 'react-toastify';
 const BASE_URL = 'https://pixabay.com/api/';
 const KEY = '32196578-0357af1d01bd33a041e645ec2';
 
-const getImages = async (value, page = 1, perPage = 12) => {
+const getImages = async (value, page = 1) => {
   const options = {
     params: {
       q: value,
       page: page,
-      per_page: perPage,
+      per_page: 12,
       image_type: 'photo',
       orientation: 'horizontal',
       safesearch: true,
